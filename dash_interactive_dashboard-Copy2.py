@@ -11,12 +11,13 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-games = df['game_id'].unique()
+games = df.groupby(['game_id','game_name']).count().reset_index()[['game_id','game_name']]
+game_list = games.apply(lambda x : [x['game_id'], x['game_name']],axis=1)
 
 app.layout = html.Div([
     dcc.Dropdown(
         id='xaxis-column',
-        options=[{'label': i, 'value': i} for i in games],
+        options=[{'label': i[1], 'value': i[0]} for i in game_list],
         value=2018121700,
         style=dict(
                     width='40%',
@@ -35,7 +36,7 @@ app.layout = html.Div([
 
 @app.callback(
     Output(component_id='graph-div', component_property='figure'),
-    [Input(component_id='xaxis-column', component_property='value'),Input('xaxis-column', 'value')]
+    [Input(component_id='xaxis-column', component_property='value'),Input('xaxis-column', 'value')] # Right now this is redundant
 )
 def update_output_div(input_value,input_value2):
     dff = df[df['game_id'] == input_value]
