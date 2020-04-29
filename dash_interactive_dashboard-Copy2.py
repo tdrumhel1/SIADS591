@@ -1,6 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_table
 from dash.dependencies import Input, Output
 import pandas as pd
 
@@ -25,6 +26,10 @@ app.layout = html.Div([
 #         placeholder="Select Answer"
     ),
     dcc.Graph(id='graph-div')
+#     ,dash_table.DataTable(
+#     id='table',
+#     data=[]
+#     )
 ]
 )
 
@@ -73,7 +78,7 @@ def update_output_div(input_value,input_value2):
             yaxis={
                 'title': 'Score',
                 'type': 'linear'
-            },height=700,width=600,
+            },height=700,width=700,
 #            hovermode='closest',
             title='In-Game Score'
             )
