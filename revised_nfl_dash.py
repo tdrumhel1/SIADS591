@@ -16,41 +16,74 @@ game_list = games.apply(lambda x : [x['game_id'], x['game_name']],axis=1)
 
 app.layout = html.Div([
     
+    # First Row
     html.Div([
+        # Game Select Dropdown (First Row - Left Side)
+        html.Div([
     
-    html.Label(children='Select Game Here'),
-    dcc.Dropdown(
-        id='xaxis-column',
-        options=[{'label': i[1], 'value': i[0]} for i in game_list],
-        value=2018121700,
-        style=dict(
-                width='40%',
-                display='inline-block',
-                verticalAlign="middle",
+        html.Label(children='Select Game Here',style={'textAlign':'left'}),
+        dcc.Dropdown(
+            id='xaxis-column',
+            options=[{'label': i[1], 'value': i[0]} for i in game_list],
+            value=2018121700
                 )
-            )
-        ]),
+            ],className='four columns'),
+        
+#         # Middle Space
+#         html.Div([
+#             html.Img(src='NFL_Logo.png')
+#             ],className='four columns'),
+        
+        # Logo in Right
+        html.Div([
+            html.Img(src='assets/NFL_Logo.png',style={'height':'30%','width':'30%'})
+            ],className='two columns',style={'float':'right'})
+        ],className='row'),
     
-    html.Div([
-    dcc.Graph(id='graph-div'
-     , className="twelve rows")]),
-    
-    html.Div([
-    html.Label(children='Total Yards')
-    ], className="twelve rows",style={'float':'center'}),
-    
+    # Second Row - Does not resize yet
     html.Div([
         
-    html.Div([
-        html.Label(children='Home Team'),html.Div(id='home-yards')
-        ], className="six columns"),
-    html.Div([
-        html.Label(children='Away Team'),html.Div(id='away-yards')
-        ], className="six columns")
-    ], className="row")
+        html.Div([
+            dcc.Graph(id='graph-div')
+            ],className='twelve columns',
+                style={'float':'middle',
+                         'height':'100%', 
+                          'width':'100%'})
+    ],className='row'),
     
-]
-)
+    
+    # Third Row
+    html.Div([
+        
+        # Total Yards
+        html.Div([
+            html.Label(children='Total Yards')
+            ],className='three columns',style={'textAlign':'center'})
+        
+        ],className='row'),
+
+    # Fourth Row
+    html.Div([
+        
+        html.Div([
+            html.Label(children='Home Team',style={'display': 'inline-block','textAlign':'center'},className='three columns'),
+            html.Label(children='Away Team',style={'display': 'inline-block','textAlign':'center'},className='three columns')
+            ],className='six columns')
+            
+    ],className='row'),
+
+    # Fifth Row
+    html.Div([
+        
+        html.Div([
+            html.Label(id='home-yards',style={'display': 'inline-block','textAlign':'center'},className='three columns'),
+            html.Label(id='away-yards',style={'display': 'inline-block','textAlign':'center'},className='three columns')
+            ],className='six columns')
+            
+    ],className='row')
+    
+    ])
+
 
 # Callback for Away Yards - Sum isn't filtering on team or Yards are off
 @app.callback(
