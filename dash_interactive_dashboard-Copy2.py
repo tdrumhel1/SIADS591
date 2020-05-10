@@ -15,20 +15,40 @@ games = df.groupby(['game_id','game_name']).count().reset_index()[['game_id','ga
 game_list = games.apply(lambda x : [x['game_id'], x['game_name']],axis=1)
 
 app.layout = html.Div([
-    html.Label(children='Select Game Here'),#html.Img(src='/NFL_Logo.png'),
+    
+    html.Div([
+    
+    html.Label(children='Select Game Here'),
     dcc.Dropdown(
         id='xaxis-column',
         options=[{'label': i[1], 'value': i[0]} for i in game_list],
         value=2018121700,
         style=dict(
-                    width='40%',
-                    display='inline-block',
-                    verticalAlign="middle",
+                width='40%',
+                display='inline-block',
+                verticalAlign="middle",
                 )
-    ),
-    dcc.Graph(id='graph-div'),
-    html.Label(children='Home Team Total Yards'),html.Div(id='home-yards'),
-    html.Label(children='Away Team Total Yards'),html.Div(id='away-yards')
+            )
+        ]),
+    
+    html.Div([
+    dcc.Graph(id='graph-div'
+     , className="twelve rows")]),
+    
+    html.Div([
+    html.Label(children='Total Yards')
+    ], className="twelve rows",style={'float':'center'}),
+    
+    html.Div([
+        
+    html.Div([
+        html.Label(children='Home Team'),html.Div(id='home-yards')
+        ], className="six columns"),
+    html.Div([
+        html.Label(children='Away Team'),html.Div(id='away-yards')
+        ], className="six columns")
+    ], className="row")
+    
 ]
 )
 
